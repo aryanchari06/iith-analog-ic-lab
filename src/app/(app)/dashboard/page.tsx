@@ -1,93 +1,218 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { LockIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
 
-const page = () => {
-  const selectedTab = useState("Home");
+interface Owner {
+  _id: string;
+  email: string;
+  username: string;
+}
+
+interface Article {
+  _id: string;
+  title: string;
+  owner: string;
+  createdAt: Date;
+  imgUrl: string;
+  queryOwner: Owner;
+}
+
+const Page = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedTab, setSelectedTab] = useState("Home");
+  const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const fetchQueries = async () => {
+      try {
+        const queries = await axios.get("/api/fetch-queries");
+        setArticles(queries.data.data);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQueries();
+  }, []);
+
+  const navigators = [{ name: "Home" }, { name: "Documents" }];
 
   const links = [
-    {
-      name: "Home",
-      href: "/",
-    },
-    {
-      name: "Documents",
-      href: "/",
-    },
+    { href: "https://www.youtube.com/", id: 1 },
+    { href: "https://www.youtube.com/", id: 2 },
+    { href: "https://www.youtube.com/", id: 3 },
+    { href: "https://www.youtube.com/", id: 4 },
+    { href: "https://www.youtube.com/", id: 5 },
   ];
-
-  const articles = [
-    {
-      img: "https://images.pexels.com/photos/3665442/pexels-photo-3665442.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      title: "title 1",
-      date: "01 January 2025",
-      username: 'User 1',
-      id: 1,
-    },
-    {
-      img: "https://images.pexels.com/photos/39290/mother-board-electronics-computer-board-39290.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      title: "title 2",
-      date: "01 January 2025",
-      username: 'User 1',
-      id: 2,
-    },
-    {
-      img: "https://images.pexels.com/photos/2517330/pexels-photo-2517330.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      title: "title 3",
-      date: "01 January 2025",
-      username: 'User 1',
-      id: 3,
-    },
-    {
-      img: "https://images.pexels.com/photos/40848/pins-cpu-processor-macro-40848.jpeg",
-      title: "title 4",
-      date: "01 January 2025",
-      username: 'User 1',
-      id: 4,
-    },
-  ];
-
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <div className="flex justify-between items-center px-4 mb-8 bg-white shadow-md py-4 rounded-lg">
-        <div className="flex items-center gap-8 text-xl text-gray-700 font-semibold">
-          {links.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="hover:text-purple-600 transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-        <Button className="bg-purple-600 text-white hover:bg-purple-700">
-          Start a discussion
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articles.map((article) => (
-          <div
-            key={article.id}
-            className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow"
-          >
-            <img
-              src={article.img}
-              alt=""
-              className="h-40 w-full object-cover rounded-md mb-4"
-            />
-            <p className="text-lg font-medium text-gray-800">{article.title}</p>
-            <span>{article.username}</span>
-            <p className="italic text-gray-600">{article.date}</p>
+    <div className="p-6 bg-gray-100 min-h-screen text-gray-800">
+      {/* Header with animation */}
+      <motion.header
+        className="sticky top-0 bg-white shadow-md py-4 px-6 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            {navigators.map((link) => (
+              <Button
+                key={link.name}
+                onClick={() => setSelectedTab(link.name)}
+                className={`text-lg font-medium bg-transparent hover:bg-transparent ${
+                  link.name === selectedTab
+                    ? "text-black underline"
+                    : "text-gray-700 hover:text-black"
+                } transition-colors`}
+              >
+                {link.name}
+              </Button>
+            ))}
           </div>
-        ))}
-      </div>
+          {session?.user && (
+            <Link href="/start-discussion">
+              <Button className="bg-black text-white hover:bg-gray-800">
+                Start a Discussion
+              </Button>
+            </Link>
+          )}
+        </div>
+      </motion.header>
+
+      {/* Welcome Section */}
+      <motion.section
+        className="mt-6 px-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+      >
+        {session?.user ? (
+          <p className="text-lg text-gray-800 mb-6">
+            Welcome,{" "}
+            <span className="font-semibold">{session.user.username}</span>!
+          </p>
+        ) : (
+          <p className="text-lg text-gray-600 mb-6">
+            Please{" "}
+            <Link href="/sign-in" className="underline text-black">
+              sign in
+            </Link>{" "}
+            to start a discussion on our forum.
+          </p>
+        )}
+      </motion.section>
+
+      {/* Articles Section */}
+      {selectedTab === "Home" ? (
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+          className="px-10"
+        >
+          {loading ? (
+            <p className="text-center text-gray-500">Loading articles...</p>
+          ) : articles.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {articles
+                .slice()
+                .reverse()
+                .map((article) => (
+                  <motion.div
+                    key={article._id}
+                    className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Link href={`/article/${article._id}`}>
+                      <div>
+                        <img
+                          src={article.imgUrl || "/default-placeholder.png"}
+                          alt={article.title}
+                          className="h-40 w-full object-cover"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                          {article.title}
+                        </h3>
+                        <p className="text-sm text-gray-700 mb-1">
+                          By {article.queryOwner.username}
+                        </p>
+                        <p className="text-sm text-gray-600 italic">
+                          {new Date(article.createdAt).toLocaleString()}
+                        </p>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-600">No articles to display.</p>
+          )}
+        </motion.section>
+      ) : (
+        <div className="px-10">
+          <motion.h1
+            className="text-xl font-semibold text-black mb-4 "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+          >
+            Important Links
+          </motion.h1>
+          {session?.user._id ? (
+            <ul className="space-y-2">
+              {links.map((link) => (
+                <motion.li
+                  key={link.id}
+                  className="border-b py-1 border-gray-400"
+                  whileHover={{ scale: 1.005 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link
+                    href={link.href}
+                    className="text-blue-800 hover:underline hover:text-black"
+                  >
+                    {link.href}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+          ) : (
+            <div className="flex items-center justify-center gap-4 ]">
+              <LockIcon className="text-gray-500" />
+              <p className="text-gray-700">Sign In to view document links</p>
+              <div className="flex space-x-4">
+                <Link
+                  href="/sign-in"
+                  className="text-blue-800 hover:underline hover:text-black"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="text-blue-800 hover:underline hover:text-black"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;

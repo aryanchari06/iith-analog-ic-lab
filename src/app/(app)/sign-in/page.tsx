@@ -56,13 +56,13 @@ const page = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Join True Feedback
+    <div className="flex justify-center items-center min-h-screen bg-green-50">
+      <div className="w-full max-w-xl p-8 space-y-8 bg-white rounded-lg shadow-md">
+      <div className="text-center">
+          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight lg:text-4xl mb-2">
+            Welcome to Analog IC Design Lab
           </h1>
-          <p className="mb-4">Sign in to start your anonymous adventure</p>
+          <p className="text-sm text-gray-600">Sign in to continue on the forum</p>
         </div>
 
         <Form {...form}>
@@ -109,9 +109,9 @@ const page = () => {
 
         <div className="text-center mt-4">
           <p>
-            Already a member?{" "}
-            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
-              Sign in
+            New here?{" "}
+            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+              Sign up
             </Link>
           </p>
         </div>
