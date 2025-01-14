@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email: ", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: Record<"email" | "password", string> | undefined): Promise<any> {
+      async authorize(credentials: Record<"email" | "password", string> | undefined) : Promise<any | null> {
         if(!credentials) throw new Error("Credentials not provided")
         await dbConnect();
         try {
@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id?.toString();
-        session.user.username = token.username;
+        session.user.username = token.username ;
       }
       return session;
     },
