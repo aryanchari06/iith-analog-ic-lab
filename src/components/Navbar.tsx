@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import IITH_LOGO from "@/assets/IITH_LOGO.svg";
 import Image from "next/image";
 
 const Navbar = () => {
@@ -36,19 +35,20 @@ const Navbar = () => {
         </div>
 
         <div className="w-full flex items-center justify-between">
-          {" "}
           {/* Title Section */}
-          <div className="flex items-center ">
+          <div className="flex items-center">
             <h1 className="text-4xl font-semibold drop-shadow-lg text-center md:text-left">
               EE5188 - Analog IC Design Lab
             </h1>
           </div>
           {/* Profile Section */}
           <div className="flex items-center gap-4 justify-center md:justify-end md:w-1/6">
-            <img
+            <Image
               src="https://iith.ac.in/assets/images/profiles/Ashudeb_Dutta.jpg"
               alt="Dr. Ashudeb Dutta"
-              className="w-14 h-14 rounded-full bg-gray-300 border-4 border-white shadow-xl transform hover:scale-105 transition-all"
+              width={56}
+              height={56}
+              className="rounded-full bg-gray-300 border-4 border-white shadow-xl transform hover:scale-105 transition-all"
             />
             <p className="text-xl font-medium drop-shadow-lg">
               Dr. Ashudeb Dutta
