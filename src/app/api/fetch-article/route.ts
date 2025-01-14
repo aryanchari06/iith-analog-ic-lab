@@ -3,15 +3,19 @@ import { ArticleModel } from "@/models/user.model";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { articleId: string } }
-) {
+export async function GET(request: NextRequest) {
   await dbConnect();
-  const { articleId } = await params;
-  console.log("ArticleID:", articleId);
 
   try {
+    const { searchParams } = new URL(request.url);
+    // console.log(searchParams, "Searchparams");
+    const queryParams = {
+      articleId: searchParams.get("article"),
+    };
+    // console.log("Query params:", queryParams);
+    const articleId = queryParams.articleId;
+    // console.log("ArticleID:", articleId);
+
     if (!articleId) {
       return NextResponse.json(
         { success: false, message: "Article ID is missing" },

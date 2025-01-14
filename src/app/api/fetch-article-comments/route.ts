@@ -3,14 +3,19 @@ import { CommentModel } from "@/models/user.model";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { articleId: string } }
-) {
+export async function GET(request: Request) {
   await dbConnect();
-  const { articleId } = params;
-  // console.log("ArticleID:", articleId);
+
   try {
+    const { searchParams } = new URL(request.url);
+    // console.log(searchParams, "Searchparams");
+    const queryParams = {
+      articleId: searchParams.get("article"),
+    };
+    // console.log("Query params:", queryParams);
+    const articleId = queryParams.articleId;
+    // console.log("ArticleID:", articleId);
+
     if (!articleId) {
       return NextResponse.json(
         { success: false, message: "Article ID is missing" },
@@ -60,7 +65,7 @@ export async function GET(
       { status: 200 }
     );
   } catch (error) {
-    console.log("Error while fetching comments: ", error)
+    console.log("Error while fetching comments: ", error);
     return NextResponse.json(
       {
         success: false,

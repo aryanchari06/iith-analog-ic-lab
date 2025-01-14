@@ -58,7 +58,7 @@ const Page = () => {
     const fetchArticle = async () => {
       try {
         const { data } = await axios.get(
-          `/api/fetch-article/${params.articleId}`
+          `/api/fetch-article?article=${params.articleId}`
         );
         setArticle(data.data);
       } catch (error) {
@@ -72,7 +72,7 @@ const Page = () => {
   useEffect(() => {
     const fetchComments = async () => {
       const fetchedComments = await axios.get(
-        `/api/fetch-article-comments/${params.articleId}`
+        `/api/fetch-article-comments?article=${params.articleId}`
       );
       setComments(fetchedComments.data.data);
     };
