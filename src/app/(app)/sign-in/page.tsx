@@ -100,7 +100,7 @@ const Page = () => {
                   Signing in...
                 </>
               ) : (
-                "Sign up"
+                "Sign in"
               )}
             </Button>
           </form>
@@ -110,7 +110,7 @@ const Page = () => {
           <p>
             New here?{" "}
             <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
-              Sign in
+              Sign up
             </Link>
           </p>
         </div>
