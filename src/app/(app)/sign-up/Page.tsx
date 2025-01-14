@@ -66,7 +66,7 @@ const page = () => {
       if (response.data.success === true) router.replace("/sign-in");
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      let errorMessage = axiosError.response?.data.message;
+      const errorMessage = axiosError.response?.data.message;
       setIsSubmitting(false);
       console.error(errorMessage || "Error while signing up the user");
     }

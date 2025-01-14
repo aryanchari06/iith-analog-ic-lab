@@ -4,7 +4,7 @@ import { UploadButton } from "@/utils/uploadthing";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface StartDiscussionForm {
@@ -57,6 +57,7 @@ const StartDiscussion = () => {
         description: "Could not add your query.",
         variant: "destructive",
       });
+      console.log("Error while generating query: ", error);
     } finally {
       reset(); // Reset form fields
       setIsQuerySubmitting(false);
@@ -68,15 +69,22 @@ const StartDiscussion = () => {
       <div className="w-full max-w-2xl mx-4 p-8 bg-white rounded-lg shadow-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Start a Discussion</h1>
-          <p className="text-gray-700 mt-2">Share your query to get insights!</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Start a Discussion
+          </h1>
+          <p className="text-gray-700 mt-2">
+            Share your query to get insights!
+          </p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Query Field */}
           <div>
-            <label htmlFor="query" className="block text-sm font-medium text-gray-800">
+            <label
+              htmlFor="query"
+              className="block text-sm font-medium text-gray-800"
+            >
               Query
             </label>
             <textarea
@@ -87,24 +95,33 @@ const StartDiscussion = () => {
               placeholder="Write your query here..."
             ></textarea>
             {errors.query && (
-              <p className="text-sm text-red-600 mt-2">{errors.query.message}</p>
+              <p className="text-sm text-red-600 mt-2">
+                {errors.query.message}
+              </p>
             )}
           </div>
 
           {/* Description Field */}
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-800">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-800"
+            >
               Description
             </label>
             <input
               id="description"
-              {...register("description", { required: "Description is required" })}
+              {...register("description", {
+                required: "Description is required",
+              })}
               type="text"
               className="mt-2 p-4 block w-full rounded-md bg-white border border-gray-300 shadow-sm focus:border-gray-900 focus:ring-gray-900 sm:text-sm placeholder-gray-400"
               placeholder="Provide a brief description..."
             />
             {errors.description && (
-              <p className="text-sm text-red-600 mt-2">{errors.description.message}</p>
+              <p className="text-sm text-red-600 mt-2">
+                {errors.description.message}
+              </p>
             )}
           </div>
 

@@ -12,9 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { signInSchema } from "@/schemas/signInSchema";
-import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
@@ -35,7 +33,7 @@ const page = () => {
     setIsSubmitting(true);
     const response = await signIn("credentials", {
       redirect: false,
-      identifier: data.identifier,
+      identifier: data.email,
       password: data.password,
     });
 
@@ -69,7 +67,7 @@ const page = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="identifier"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email/Username</FormLabel>

@@ -49,14 +49,29 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error("Error while creating query:", error.message || error);
+  } catch (error: unknown) {
+    // Narrow the type of error to Error
+    if (error instanceof Error) {
+      console.error("Error while creating query:", error.message);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Failed to create user query",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    // In case error is not an instance of Error
+    console.error("Unexpected error:", error);
 
     return NextResponse.json(
       {
         success: false,
         message: "Failed to create user query",
-        error: error.message || "Unknown error occurred",
+        error: "Unknown error occurred",
       },
       { status: 500 }
     );

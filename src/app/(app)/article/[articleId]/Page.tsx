@@ -255,7 +255,7 @@ const Page = () => {
                           {isDeletingComment ? (
                             <>
                               <Loader2 className="animate-spin" />
-                              "Deleting..."
+                              Deleting...
                             </>
                           ) : (
                             "Delete"

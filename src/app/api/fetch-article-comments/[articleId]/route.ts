@@ -60,6 +60,7 @@ export async function GET(
       { status: 200 }
     );
   } catch (error) {
+    console.log("Error while fetching comments: ", error)
     return NextResponse.json(
       {
         success: false,

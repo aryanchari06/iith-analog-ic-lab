@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcryptjs from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
-import {UserModel} from "@/models/user.model";
+import { UserModel } from "@/models/user.model";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,14 +13,13 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email: ", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials: Record<"email" | "password", string> | undefined): Promise<any> {
+        if(!credentials) throw new Error("Credentials not provided")
         await dbConnect();
         try {
           const user = await UserModel.findOne({
-            email: credentials.identifier,
+            email: credentials.email,
           });
-
-          
 
           if (!user) throw new Error("No user found with this email");
 
@@ -30,8 +29,8 @@ export const authOptions: NextAuthOptions = {
           );
           if (!isPasswordCorrect) throw new Error("Incorrect Password");
           return user;
-        } catch (err: any) {
-          throw new Error(err);
+        } catch (err) {
+          throw new Error((err as Error).message);
         }
       },
     }),
