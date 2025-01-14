@@ -1,14 +1,14 @@
 import dbConnect from "@/lib/dbConnect";
 import { ArticleModel } from "@/models/user.model";
 import mongoose from "mongoose";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { articleId: string } }
 ) {
   await dbConnect();
-  const { articleId } = params;
+  const { articleId } = await params;
   console.log("ArticleID:", articleId);
 
   try {
