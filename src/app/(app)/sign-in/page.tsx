@@ -46,6 +46,7 @@ const Page = () => {
           description: "Incorrect email or password",
           variant: "destructive",
         });
+        setIsSubmitting(false)
       }
     }
 
@@ -70,9 +71,9 @@ const Page = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email/Username</FormLabel>
+                  <FormLabel>Institute Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="email/username" {...field} />
+                    <Input placeholder="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +110,7 @@ const Page = () => {
           <p>
             New here?{" "}
             <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
-              Sign up
+              Sign in
             </Link>
           </p>
         </div>

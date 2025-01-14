@@ -116,7 +116,7 @@ const Page = () => {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your email"
+                      placeholder="Enter your institute email"
                       type="email"
                       className="focus:ring-black focus:border-black"
                       {...field}

@@ -6,7 +6,7 @@ import { LockIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 interface Owner {
   _id: string;
@@ -55,16 +55,16 @@ const Page = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen text-gray-800">
+    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen text-gray-800">
       {/* Header with animation */}
       <motion.header
-        className="sticky top-0 bg-white shadow-md py-4 px-6 z-10"
+        className="sticky top-0 bg-white shadow-md py-4 px-4 sm:px-6 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+          <div className="flex items-center gap-4">
             {navigators.map((link) => (
               <Button
                 key={link.name}
@@ -81,7 +81,7 @@ const Page = () => {
           </div>
           {session?.user && (
             <Link href="/start-discussion">
-              <Button className="bg-black text-white hover:bg-gray-800">
+              <Button className="bg-black text-white hover:bg-gray-800  sm:mt-0">
                 Start a Discussion
               </Button>
             </Link>
@@ -91,18 +91,18 @@ const Page = () => {
 
       {/* Welcome Section */}
       <motion.section
-        className="mt-6 px-10"
+        className="mt-6 px-4 sm:px-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
         {session?.user ? (
-          <p className="text-lg text-gray-800 mb-6">
+          <p className="text-lg sm:text-xl text-gray-800 mb-6">
             Welcome,{" "}
             <span className="font-semibold">{session.user.username}</span>!
           </p>
         ) : (
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg sm:text-xl text-gray-600 mb-6">
             Please{" "}
             <Link href="/sign-in" className="underline text-black">
               sign in
@@ -118,7 +118,7 @@ const Page = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.5 }}
-          className="px-10"
+          className="px-4 sm:px-10"
         >
           {loading ? (
             <p className="text-center text-gray-500">Loading articles...</p>
@@ -162,9 +162,9 @@ const Page = () => {
           )}
         </motion.section>
       ) : (
-        <div className="px-10">
+        <div className="px-4 sm:px-10">
           <motion.h1
-            className="text-xl font-semibold text-black mb-4 "
+            className="text-lg sm:text-xl font-semibold text-black mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 0.5 }}
@@ -190,7 +190,7 @@ const Page = () => {
               ))}
             </ul>
           ) : (
-            <div className="flex items-center justify-center gap-4 ]">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <LockIcon className="text-gray-500" />
               <p className="text-gray-700">Sign In to view document links</p>
               <div className="flex space-x-4">

@@ -8,10 +8,10 @@ import Link from "next/link";
 const Footer = () => {
   const { data: session } = useSession();
   return (
-    <footer className="bg-gray-300 text-gray-800 py-6 mt-12">
+    <footer className="bg-gray-300 text-gray-800 py-6 mt-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
         {/* Copyright Section */}
-        <div className="text-center sm:text-left flex items-center gap-2">
+        <div className="flex items-center gap-2 text-center sm:text-left">
           <Image
             src="/IITH_LOGO_BLACK.svg"
             alt="IITH Logo"
@@ -19,7 +19,7 @@ const Footer = () => {
             height={100}
             className="z-10"
           />
-          <div className="flex flex-col ">
+          <div>
             <p className="text-md text-gray-600">
               &copy; {new Date().getFullYear()} Analog IC Design Lab IITH. All
               Rights Reserved.
