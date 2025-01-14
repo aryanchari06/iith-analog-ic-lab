@@ -22,7 +22,7 @@ const Navbar = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70 z-0"></div>
 
       {/* Content of the navbar */}
-      <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-8">
+      <div className="relative flex flex-col items-center md:flex-row md:items-center gap-6 md:gap-8">
         {/* Logo Section */}
         <div className="z-10 flex-shrink-0">
           <Image
@@ -36,13 +36,13 @@ const Navbar = () => {
 
         {/* Title Section */}
         <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
-          <h1 className="text-2xl md:text-4xl font-semibold drop-shadow-lg">
+          <h1 className="text-3xl md:text-4xl font-semibold drop-shadow-lg">
             EE5188 - Analog IC Design Lab
           </h1>
         </div>
 
         {/* Profile Section */}
-        <div className="flex items-center gap-4 justify-center flex-col ">
+        <div className="flex items-center gap-4 justify-center">
           <Image
             src="https://iith.ac.in/assets/images/profiles/Ashudeb_Dutta.jpg"
             alt="Dr. Ashudeb Dutta"
