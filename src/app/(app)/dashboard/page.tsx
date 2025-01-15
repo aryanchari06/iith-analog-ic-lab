@@ -134,7 +134,7 @@ const Page = () => {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Link href={`/article/${article._id}`}>
+                    <Link href={`/article/${article._id}`} target="_blank">
                       <div>
                         <img
                           src={article.imgUrl || "/default-placeholder.png"}

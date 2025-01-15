@@ -170,7 +170,7 @@ const Page = () => {
 
   return (
     <div className="max-w-5xl mx-auto py-10 px-6 bg-white">
-      <motion.header
+      {/* <motion.header
         className="sticky top-0 bg-white shadow-md py-4 px-4 mb-8 sm:px-6 z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -200,7 +200,7 @@ const Page = () => {
             </Link>
           )}
         </div>
-      </motion.header>
+      </motion.header> */}
       {/* Fullscreen Image Modal */}
       {isImageOpen && (
         <div
