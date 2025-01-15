@@ -24,7 +24,7 @@ const Footer = () => {
               &copy; {new Date().getFullYear()} Analog IC Design Lab IITH. All
               Rights Reserved.
             </p>
-            <p className="text-sm text-gray-500">Developed by Aryan Chari</p>
+            <p className="text-sm text-gray-500">Developed by Aryan Chari and Bipul Biswas</p>
           </div>
         </div>
 

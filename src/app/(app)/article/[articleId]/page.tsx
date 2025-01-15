@@ -7,6 +7,7 @@ import { Loader2, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 import {
   Dialog,
@@ -17,6 +18,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
+import Link from "next/link";
 
 interface Comment {
   text: string;
@@ -53,6 +55,10 @@ const Page = () => {
   const [commentToDelete, setCommentToDelete] = useState<string | null>(null);
   const [isDeletingComment, setIsDeletingComment] = useState(false);
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigators = [{ name: "Home" }, { name: "Documents" }];
+
+  const [selectedTab, setSelectedTab] = useState("Home");
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -163,7 +169,38 @@ const Page = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-6 bg-white">
+    <div className="max-w-5xl mx-auto py-10 px-6 bg-white">
+      <motion.header
+        className="sticky top-0 bg-white shadow-md py-4 px-4 mb-8 sm:px-6 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+          <div className="flex items-center gap-4">
+            {navigators.map((link) => (
+              <Button
+                key={link.name}
+                onClick={() => setSelectedTab(link.name)}
+                className={`text-lg font-medium bg-transparent hover:bg-transparent ${
+                  link.name === selectedTab
+                    ? "text-black underline"
+                    : "text-gray-700 hover:text-black"
+                } transition-colors`}
+              >
+                {link.name}
+              </Button>
+            ))}
+          </div>
+          {session?.user && (
+            <Link href="/start-discussion">
+              <Button className="bg-black text-white hover:bg-gray-800  sm:mt-0">
+                Start a Discussion
+              </Button>
+            </Link>
+          )}
+        </div>
+      </motion.header>
       {/* Fullscreen Image Modal */}
       {isImageOpen && (
         <div
@@ -179,7 +216,7 @@ const Page = () => {
       )}
 
       <div className="mb-8">
-      <h1 className="text-3xl font-semibold text-gray-900 mb-6">
+        <h1 className="text-3xl font-semibold text-gray-900 mb-6">
           {article.title}
         </h1>
         <img
@@ -188,7 +225,7 @@ const Page = () => {
           className="w-full h-64 mb-8 object-cover rounded-md shadow-md cursor-pointer transform transition duration-300 hover:scale-[1.01]"
           onClick={() => setIsImageOpen(true)}
         />
-        
+
         <p className="text-sm text-gray-600 mt-2">
           Published by{" "}
           <span className="font-medium text-gray-800">
@@ -224,7 +261,7 @@ const Page = () => {
             comments.map((comment) => (
               <li
                 key={comment?._id}
-                className="p-4 border border-gray-200 rounded-lg shadow-sm flex justify-between transform transition duration-300 hover:scale-105"
+                className="p-4 border border-gray-200 rounded-lg shadow-sm flex justify-between transform transition duration-300 hover:scale-[1.005]"
               >
                 <div>
                   <p className="text-sm font-medium text-gray-900">
@@ -232,11 +269,62 @@ const Page = () => {
                   </p>
                   <p className="text-gray-700 mt-2">{comment.text}</p>
                 </div>
-                {comment.commentOwner?._id === session?.user?._id ||
-                comment.commentOwner?._id === article.articleOwner._id ? (
-                  <Dialog>
+                {/* {comment.commentOwner?._id === session?.user?._id ||
+                session?.user?._id === article.articleOwner._id ? (
+                  <Dialog open={isDialogOpen}>
                     <DialogTrigger>
                       <Trash className="text-red-600 cursor-pointer transform transition duration-300 hover:scale-110" />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogDescription>
+                          This action cannot be undone.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <Button
+                          className="bg-red-600 text-white"
+                          onClick={() => {
+                            handleCommentDelete(comment._id);
+                          }}
+                        >
+                          {isDeletingComment ? (
+                            <>
+                              <Loader2 className="animate-spin" />
+                              Deleting...
+                            </>
+                          ) : (
+                            "Delete"
+                          )}
+                        </Button>
+                        <Button
+                          className="ml-2"
+                          onClick={() => {
+                            setCommentToDelete(null);
+                            setIsDialogOpen(false);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                ) : null} */}
+
+                {comment.commentOwner?._id === session?.user?._id ||
+                session?.user?._id === article.articleOwner._id ? (
+                  <Dialog
+                    open={commentToDelete === comment._id}
+                    onOpenChange={(isOpen) => {
+                      if (!isOpen) setCommentToDelete(null);
+                    }}
+                  >
+                    <DialogTrigger asChild>
+                      <Trash
+                        className="text-red-600 cursor-pointer transform transition duration-300 hover:scale-110"
+                        onClick={() => setCommentToDelete(comment._id)}
+                      />
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
