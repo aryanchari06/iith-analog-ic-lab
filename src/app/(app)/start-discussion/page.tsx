@@ -14,6 +14,7 @@ interface StartDiscussionForm {
 
 const StartDiscussion = () => {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [isImageUpload, setIsImageUpload] = useState(false)
   const {
     register,
     handleSubmit,
@@ -128,8 +129,12 @@ const StartDiscussion = () => {
           {/* Image Upload */}
           <UploadButton
             endpoint="imageUploader"
+            onUploadBegin={()=> {
+              setIsImageUpload(true)
+            }}
             onClientUploadComplete={(res) => {
               setImgUrl(res[0]?.url);
+              setIsImageUpload(false)
             }}
             onUploadError={(error: Error) => {
               alert(`ERROR! ${error.message}`);
@@ -150,7 +155,7 @@ const StartDiscussion = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={isQuerySubmitting}
+            disabled={isQuerySubmitting || isImageUpload}
             className="w-full bg-black text-white font-semibold py-3 px-6 rounded-md shadow-sm hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             {isSubmitting ? "Submitting..." : "Submit Query"}
